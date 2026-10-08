@@ -1,11 +1,15 @@
 <?php
+// Carga la configuracion de URL y base de datos antes de procesar una ruta.
 require "Modelo/config.php";
 require "Modelo/conexion.php";
 
-
+// La ruta predeterminada ofrece el enlace al inicio de sesion.
 $page ="index";
+// El parametro GET page identifica la seccion o accion solicitada por el navegador.
 if(isset($_GET['page']))
     $page = $_GET['page'];
+
+// Este switch funciona como enrutador frontal: deriva la solicitud al controlador o vista adecuada.
 switch($page){
     case 'login' : 
         require "Controlador/C_login.php";
@@ -40,6 +44,9 @@ switch($page){
         break;
 
 
-    default : echo "<a href='" . urlsite . "?page=login'>Login</a>"; break;
+    default :
+        // Para una ruta desconocida, ofrece un enlace a la pantalla de acceso.
+        echo "<a href='" . urlsite . "?page=login'>Login</a>";
+        break;
 
     }

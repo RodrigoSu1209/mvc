@@ -1,3 +1,6 @@
+# Configuracion local con contrasenas; no debe publicarse en el repositorio.
 .env
+# Metadatos de configuracion del IDE.
 .idea/
+# Archivos de registro generados durante la ejecucion o depuracion.
 *.log

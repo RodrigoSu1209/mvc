@@ -1,36 +1,50 @@
+# Compose coordina los contenedores de la aplicacion y la base de datos.
 services:
+  # Servicio web: construye PHP/Apache desde el Dockerfile de este proyecto.
   app:
     build: .
+    # Publica el puerto 80 del contenedor en el puerto 8080 del equipo.
     ports:
       - "8080:80"
+    # Variables que PHP lee para construir URL y conectarse a MariaDB.
     environment:
       APP_URL: ${APP_URL:-}
+      # En la red interna de Compose, db es el nombre DNS del servicio MariaDB.
       DB_HOST: db
       DB_NAME: ${DB_NAME:-dbstore}
       DB_USER: ${DB_USER:-mvc}
       DB_PASSWORD: ${DB_PASSWORD:-mvc_dev_password}
+    # Espera a que la base responda a su healthcheck antes de iniciar la aplicacion.
     depends_on:
       db:
         condition: service_healthy
+    # Mantiene las imagenes subidas fuera del ciclo de vida del contenedor.
     volumes:
       - carousel_uploads:/var/www/html/Public/img/carrusel
 
+  # Servicio de base de datos: Compose descarga esta imagen si aun no existe localmente.
   db:
     image: mariadb:11.4
+    # La imagen oficial usa estas variables al inicializar una base de datos vacia.
     environment:
       MARIADB_DATABASE: ${DB_NAME:-dbstore}
       MARIADB_USER: ${DB_USER:-mvc}
       MARIADB_PASSWORD: ${DB_PASSWORD:-mvc_dev_password}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-mvc_root_password}
+    # Persiste los datos y monta el SQL de creacion solo como archivo de inicializacion.
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    # Compose considera lista la base cuando esta comprobacion termina correctamente.
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+# Declara los volumenes persistentes compartidos por los servicios.
 volumes:
+  # Archivos de datos internos de MariaDB.
   mariadb_data:
+  # Archivos de imagenes cargadas desde la aplicacion.
   carousel_uploads:

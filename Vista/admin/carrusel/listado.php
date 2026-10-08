@@ -1,12 +1,13 @@
 <?php
+// El listado reutiliza los elementos visuales comunes de la aplicacion.
 require __DIR__ . '/../../../Vista/layouts/header.php';
-// Ruta absoluta: C:\xampp\htdocs\MVC\MVC_CRUD\Vista\layouts\header.php
 ?>
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-sm-8 border">
            
+        <!-- Abre el formulario que crea un elemento nuevo del carrusel. -->
         <a href="<?php echo urlsite ?>?page=carrusel&opcion=nuevo">Nuevo registro</a>
         
             <table class="table">
@@ -19,9 +20,11 @@ require __DIR__ . '/../../../Vista/layouts/header.php';
                 </thead>s
 
                 <tbody>
+                    <!-- Si el controlador no entrego filas, se recorre una lista vacia. -->
                     <?php $datos = isset($datos) ? $datos : []; ?>
                     <?php foreach ($datos as $v): ?>
                         <tr>
+                            <!-- Los campos se imprimen desde la fila devuelta por el modelo. -->
                             <td><?php echo $v->orden; ?></td>
                             <td><?php echo $v->descripcion; ?></td>
                             <td>
@@ -40,6 +43,6 @@ require __DIR__ . '/../../../Vista/layouts/header.php';
 
 
 <?php
+// Incluye el cierre comun del documento HTML.
 require __DIR__ . '/../../../Vista/layouts/footer.php';
-// Ruta absoluta: C:\xampp\htdocs\MVC\MVC_CRUD\Vista\layouts\footer.php
 ?>

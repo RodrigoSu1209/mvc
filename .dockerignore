@@ -1,4 +1,8 @@
+# Git no necesita copiarse dentro de la imagen de la aplicacion.
 .git
+# Los secretos se inyectan mediante Compose, no se incluyen en la imagen.
 .env
+# Configuracion del editor, irrelevante para la ejecucion del sitio.
 .idea
+# Los registros locales tampoco forman parte de la imagen.
 *.log
