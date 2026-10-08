@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      APP_URL: ${APP_URL:-}
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-dbstore}
+      DB_USER: ${DB_USER:-mvc}
+      DB_PASSWORD: ${DB_PASSWORD:-mvc_dev_password}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - carousel_uploads:/var/www/html/Public/img/carrusel
+
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-dbstore}
+      MARIADB_USER: ${DB_USER:-mvc}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-mvc_dev_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-mvc_root_password}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mariadb_data:
+  carousel_uploads:

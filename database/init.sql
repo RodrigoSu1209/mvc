@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS carrusel (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    descripcion VARCHAR(255) NOT NULL,
+    urlfoto VARCHAR(255) NOT NULL,
+    link VARCHAR(2048) NOT NULL DEFAULT '',
+    orden INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS login (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    email VARCHAR(254) NOT NULL,
+    password CHAR(32) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_login_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

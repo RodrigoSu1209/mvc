@@ -1,0 +1,12 @@
+# Desactiva el listado automatico de archivos cuando una URL apunta a un directorio sin pagina de inicio.
+Options -Indexes
+
+# Hace que Apache abra index.php al solicitar la raiz del proyecto o un directorio sin archivo indicado.
+DirectoryIndex index.php
+
+# Inicia una regla de seleccion de archivos cuyo nombre coincide con la expresion regular indicada.
+<FilesMatch "(^\.|.*\.(sql|ini|env|log)$)">
+    # Deniega solicitudes HTTP a archivos ocultos y a archivos que suelen contener datos o configuracion privada.
+    Require all denied
+# Cierra el bloque de seleccion de archivos y limita la regla anterior a los nombres coincidentes.
+</FilesMatch>
